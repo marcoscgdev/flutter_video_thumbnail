@@ -29,19 +29,26 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Flutter Video Thumbnail')),
-        body: SizedBox(
-          width: double.infinity,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FilledButton(
-                  onPressed: () => _getVideoThumbnail(),
-                  child: Text("Get video thumbnail"),
-                ),
-                if (_isLoading) CircularProgressIndicator(),
-                if (_thumbImage != null) Image.memory(_thumbImage!, width: 220),
-              ],
+        body: SafeArea(
+          child: SizedBox(
+            width: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  FilledButton(
+                    onPressed: () => _getLocalVideoThumbnail(),
+                    child: Text("Get local video thumbnail"),
+                  ),
+                  FilledButton(
+                    onPressed: () => _getNetworkVideoThumbnail(),
+                    child: Text("Get network video thumbnail"),
+                  ),
+                  if (_isLoading) CircularProgressIndicator(),
+                  if (_thumbImage != null)
+                    Image.memory(_thumbImage!, width: 220),
+                ],
+              ),
             ),
           ),
         ),
@@ -49,15 +56,12 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  _getVideoThumbnail() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? galleryVideo = await picker.pickVideo(
+  _getLocalVideoThumbnail() async {
+    final XFile? galleryVideo = await ImagePicker().pickVideo(
       source: ImageSource.gallery,
     );
 
-    setState(() {
-      _isLoading = true;
-    });
+    _showLoading();
 
     Uint8List? thumb = await FlutterVideoThumbnail.getThumbnail(
       galleryVideo?.path ?? '',
@@ -65,8 +69,37 @@ class _MyAppState extends State<MyApp> {
     );
 
     setState(() {
-      _isLoading = false;
       _thumbImage = thumb;
+    });
+
+    _hideLoading();
+  }
+
+  _getNetworkVideoThumbnail() async {
+    _showLoading();
+
+    Uint8List? thumb = await FlutterVideoThumbnail.getThumbnail(
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+      quality: 80, // Optional
+    );
+
+    setState(() {
+      _thumbImage = thumb;
+    });
+
+    _hideLoading();
+  }
+
+  _showLoading() {
+    setState(() {
+      _thumbImage = null;
+      _isLoading = true;
+    });
+  }
+
+  _hideLoading() {
+    setState(() {
+      _isLoading = false;
     });
   }
 }
