@@ -1,5 +1,4 @@
 import AVFoundation
-import Dispatch
 import Flutter
 import UIKit
 
@@ -26,30 +25,30 @@ public class FlutterVideoThumbnailPlugin: NSObject, FlutterPlugin {
         return
       }
 
-      let url = URL(fileURLWithPath: videoPath)
+      let url =
+        videoPath.starts(with: "http") ? URL(string: videoPath)! : URL(fileURLWithPath: videoPath)
       let asset = AVAsset(url: url)
 
-      DispatchQueue.global().async {
-        let imageGenerator = AVAssetImageGenerator(asset: asset)
-        let time = CMTime(seconds: 0.0, preferredTimescale: 600)
-        let times = [NSValue(time: time)]
-        imageGenerator.generateCGImagesAsynchronously(
-          forTimes: times,
-          completionHandler: { _, image, _, _, _ in
-            if let cgImage = image,
-              let data = UIImage(cgImage: cgImage).jpegData(
-                compressionQuality: CGFloat(((imageQuality) / 100)))
-            {
-              result(FlutterStandardTypedData(bytes: data))
-            } else {
-              result(
-                FlutterError(
-                  code: "NO_IMAGE",
-                  message: "Could not generate image",
-                  details: nil))
-            }
-          })
-      }
+      let imageGenerator = AVAssetImageGenerator(asset: asset)
+      let time = CMTime(seconds: 0.0, preferredTimescale: 600)
+      let times = [NSValue(time: time)]
+      imageGenerator.generateCGImagesAsynchronously(
+        forTimes: times,
+        completionHandler: { _, image, _, _, _ in
+          if let cgImage = image,
+            let data = UIImage(cgImage: cgImage).jpegData(
+              compressionQuality: CGFloat(((imageQuality) / 100)))
+          {
+            result(FlutterStandardTypedData(bytes: data))
+          } else {
+            result(
+              FlutterError(
+                code: "NO_IMAGE",
+                message: "Could not generate image.",
+                details: nil))
+          }
+        })
+
     default:
       result(FlutterMethodNotImplemented)
     }
