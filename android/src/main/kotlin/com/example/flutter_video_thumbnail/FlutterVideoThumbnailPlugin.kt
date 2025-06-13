@@ -41,7 +41,11 @@ class FlutterVideoThumbnailPlugin: FlutterPlugin, MethodCallHandler {
   private fun getVideoThumbnail(videoPath: String, imageQuality: Int?, result: MethodChannel.Result) {
     try {
       val retriever = MediaMetadataRetriever()
-      retriever.setDataSource(videoPath)
+      if (videoPath.startsWith("http")) {
+        retriever.setDataSource(videoPath, mapOf())
+      } else {
+        retriever.setDataSource(videoPath)
+      }
       val bitmap = retriever.frameAtTime
       if (bitmap != null) {
         val stream = ByteArrayOutputStream()
