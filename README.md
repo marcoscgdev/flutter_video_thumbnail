@@ -1,4 +1,4 @@
-# flutter_video_thumbnail
+# flutter_video_thumbnail  [![Pub](https://img.shields.io/pub/v/flutter_video_thumbnail.svg)](https://pub.dev/packages/flutter_video_thumbnail)
 
 A Flutter plugin to generate thumbnails from video files. Supports both local and network videos on Android and iOS.
 
