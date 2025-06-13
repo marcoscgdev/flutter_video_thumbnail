@@ -38,7 +38,7 @@ public class FlutterVideoThumbnailPlugin: NSObject, FlutterPlugin {
           completionHandler: { _, image, _, _, _ in
             if let cgImage = image,
               let data = UIImage(cgImage: cgImage).jpegData(
-                compressionQuality: ((imageQuality ?? 80) / 100))
+                compressionQuality: CGFloat(((imageQuality) / 100)))
             {
               result(FlutterStandardTypedData(bytes: data))
             } else {
