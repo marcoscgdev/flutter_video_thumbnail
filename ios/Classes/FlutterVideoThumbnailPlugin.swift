@@ -27,7 +27,7 @@ public class FlutterVideoThumbnailPlugin: NSObject, FlutterPlugin {
 
       let url =
         videoPath.starts(with: "http") ? URL(string: videoPath)! : URL(fileURLWithPath: videoPath)
-      let asset = AVAsset(url: url)
+      let asset = AVURLAsset(url: url)
 
       let imageGenerator = AVAssetImageGenerator(asset: asset)
       let time = CMTime(seconds: 0.0, preferredTimescale: 600)
