@@ -79,7 +79,7 @@ class _MyAppState extends State<MyApp> {
     _showLoading();
 
     Uint8List? thumb = await FlutterVideoThumbnail.getThumbnail(
-      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
       quality: 80, // Optional
     );
 

@@ -1,14 +1,14 @@
 # flutter_video_thumbnail  [![Pub](https://img.shields.io/pub/v/flutter_video_thumbnail.svg)](https://pub.dev/packages/flutter_video_thumbnail)
 
-A Flutter plugin to generate thumbnails from video files. Supports both local and network videos on Android and iOS.
+A Flutter plugin to generate thumbnails from video files. Supports local and network videos on Android, iOS, and Web.
 
 ## Features
 
 *   Generate thumbnails from local video files.
 *   Generate thumbnails from network video URLs.
 *   Specify thumbnail quality.
-*   Cache thumbnails for network videos to improve performance.
-*   Supports Android and iOS.
+*   Cache thumbnails for network videos to improve performance (Android & iOS).
+*   Supports Android, iOS, and Web.
 
 ## Getting Started
 
@@ -60,7 +60,7 @@ For a more complete example, please see the `example` directory in this plugin.
 
 *   `videoPath` (String, required): The path to the local video file or the URL of a network video.
 *   `quality` (int, optional): The quality of the generated thumbnail, an integer between 0 and 100. Defaults to `80`.
-*   `useCache` (bool, optional): If `true` (default) and `videoPath` is a network URL, the plugin will attempt to load the thumbnail from cache first and store it after generation. Set to `false` to always fetch and generate the thumbnail without using the cache. This parameter has no effect on local video files.
+*   `useCache` (bool, optional): If `true` (default) and `videoPath` is a network URL, the plugin will attempt to load the thumbnail from cache first and store it after generation. Set to `false` to always fetch and generate the thumbnail without using the cache. This parameter has no effect on local video files. On Web, this parameter currently has no effect; caching is managed by the browser.
 
 Returns a `Future<Uint8List?>` which is the byte data of the thumbnail image, or `null` if thumbnail generation fails.
 
